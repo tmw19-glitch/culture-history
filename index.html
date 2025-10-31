@@ -4,127 +4,253 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>【討論形式で学ぶ】飛鳥〜室町 文化変遷比較サイト</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
+    <!-- Tailwind CSS CDNを読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 日本語フォント設定 */
+        :root {
+            --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+        body {
+            font-family: var(--font-inter);
+            background-color: #f7f9fc; /* 全体の薄い背景 */
+        }
+        /* 各文化の色定義 */
+        .asuka { --color: #4CAF50; } /* Green */
+        .tenpyo { --color: #2196F3; } /* Blue */
+        .kokufu { --color: #FF9800; } /* Orange */
+        .kamakura { --color: #F44336; } /* Red */
+        .higashiyama { --color: #607D8B; } /* Slate */
+
+        /* キャストカードのカスタムスタイル */
+        .cast-card {
+            border-left: 6px solid var(--color);
+            background-color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cast-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .cast-card h3 {
+            color: var(--color);
+        }
+
+        /* 対話ボックスのカスタムスタイル */
+        .dialogue {
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        /* 各文化の対話ボックスの背景色 */
+        .dialogue.asuka { background-color: #e8f5e9; border: 1px solid #c8e6c9; }
+        .dialogue.tenpyo { background-color: #e3f2fd; border: 1px solid #bbdefb; }
+        .dialogue.kokufu { background-color: #fff3e0; border: 1px solid #ffe0b2; }
+        .dialogue.kamakura { background-color: #ffebee; border: 1px solid #ffcdd2; }
+        .dialogue.higashiyama { background-color: #eceff1; border: 1px solid #cfd8dc; }
+        
+        /* 討論テーマの装飾 */
+        .theme-title {
+            @apply text-lg font-semibold text-gray-700 mt-4 mb-6 border-b-2 border-indigo-200 pb-2;
+        }
+
+        /* テーブルのストライプとホバーエフェクト */
+        .summary-table tbody tr:nth-child(odd) {
+            background-color: #f0f4f8;
+        }
+        .summary-table tbody tr:hover {
+            background-color: #e0e7ff;
+            transition: background-color 0.2s;
+        }
+
+    </style>
+</head>
 <body>
 
-    <header class="main-header">
-        <h1>日本文化 時代の美意識ディベート</h1>
-        <p>飛鳥から室町へ。各時代を代表する人物たちが、自らの文化の特徴、そして他の文化との共通点・相違点を語り尽くします。美術作品の見分け方も解説！</p>
-    </header>
+    <div class="main-header bg-indigo-700 text-white py-12 px-4 shadow-xl">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold mb-2">日本文化 時代の美意識ディベート</h1>
+            <p class="text-indigo-200 text-base sm:text-lg">飛鳥から室町へ。各時代を代表する人物たちが、自らの文化の特徴、そして他の文化との共通点・相違点を語り尽くします。美術作品の見分け方も解説！</p>
+        </div>
+    </div>
 
-    <div class="container">
-        <section class="cast-section">
-            <h2>🎭 討論参加者（文化のアンカー）</h2>
-            <div class="cast-list">
-                <div class="cast-card asuka"><h3>聖徳太子 (飛鳥文化)</h3><p>大陸受容の「始まり」。仏教の基礎。</p></div>
-                <div class="cast-card tenpyo"><h3>聖武天皇 (天平文化)</h3><p>「国際色」の頂点。大規模な仏教美術。</p></div>
-                <div class="cast-card kokufu"><h3>紫式部 (国風文化)</h3><p>「日本化」への転換。優美な貴族文化。</p></div>
-                <div class="cast-card kamakura"><h3>運慶 (鎌倉文化)</h3><p>「武士」の精神。迫真の写実彫刻。</p></div>
-                <div class="cast-card higashiyama"><h3>足利義政 (東山文化)</h3><p>「簡素美」の確立。「侘び・寂び」。</p></div>
+    <div class="container max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- 討論参加者セクション -->
+        <section class="cast-section bg-white p-6 rounded-xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-800 border-b-2 border-indigo-400 pb-2">🎭 討論参加者（文化のアンカー）</h2>
+            <div class="cast-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                
+                <div class="cast-card asuka p-4 rounded-lg shadow-md cursor-pointer">
+                    <h3 class="text-xl font-bold mb-1">聖徳太子 (飛鳥文化)</h3>
+                    <p class="text-sm text-gray-600">大陸受容の「始まり」。仏教の基礎。</p>
+                </div>
+                
+                <div class="cast-card tenpyo p-4 rounded-lg shadow-md cursor-pointer">
+                    <h3 class="text-xl font-bold mb-1">聖武天皇 (天平文化)</h3>
+                    <p class="text-sm text-gray-600">「国際色」の頂点。大規模な仏教美術。</p>
+                </div>
+                
+                <div class="cast-card kokufu p-4 rounded-lg shadow-md cursor-pointer">
+                    <h3 class="text-xl font-bold mb-1">紫式部 (国風文化)</h3>
+                    <p class="text-sm text-gray-600">「日本化」への転換。優美な貴族文化。</p>
+                </div>
+                
+                <div class="cast-card kamakura p-4 rounded-lg shadow-md cursor-pointer">
+                    <h3 class="text-xl font-bold mb-1">運慶 (鎌倉文化)</h3>
+                    <p class="text-sm text-gray-600">「武士」の精神。迫真の写実彫刻。</p>
+                </div>
+                
+                <div class="cast-card higashiyama p-4 rounded-lg shadow-md cursor-pointer">
+                    <h3 class="text-xl font-bold mb-1">足利義政 (東山文化)</h3>
+                    <p class="text-sm text-gray-600">「簡素美」の確立。「侘び・寂び」。</p>
+                </div>
+
             </div>
         </section>
 
         <main class="debate-main">
-            <section class="debate-stage stage-1">
-                <h2>ステージ1：大陸との関係（受容と日本化）</h2>
+            <!-- ステージ1 -->
+            <section class="debate-stage stage-1 mb-10 p-5 bg-white rounded-xl shadow-lg border-t-4 border-t-indigo-500">
+                <h2 class="text-xl sm:text-2xl font-bold text-indigo-900 mb-3">ステージ1：大陸との関係（受容と日本化）</h2>
                 <h3 class="theme-title">🎨 討論テーマ：「仏像・建築の様式比較」</h3>
                 
                 <div class="dialogue asuka">
-                    <h4>聖徳太子 (飛鳥)：</h4>
-                    <p>私の文化（飛鳥文化）は、大陸の進んだ文化を初めて受容した**共通の礎**です。**法隆寺の釈迦三尊像**に見られるのは、**アルカイックスマイル**と幾何学的な均整美。後の天平文化と比較すると、**まだ素朴で稚拙な要素**が残っているのが**相違点**です。</p>
+                    <h4 class="font-bold text-lg text-asuka">聖徳太子 (飛鳥)：</h4>
+                    <p class="text-gray-700">我々の飛鳥文化は、仏教という**大きな教え**を大陸から初めて受け入れた**共通の礎**です。その美意識は、**法隆寺の釈迦三尊像**に集約されています。</p>
                 </div>
                 
                 <div class="dialogue tenpyo">
-                    <h4>聖武天皇 (天平)：</h4>
-                    <p>天平文化では、**写実性**と**国際性**が一気に深まります。東大寺の**大仏**のような**大規模な塑像**や、**乾漆像（例：興福寺の阿修羅像）**が主流で、飛鳥とは**素材と技術が大きく異なります**。**正倉院の宝物**が示す**国際性のスケール**が、飛鳥文化との**格段の違い**です。</p>
+                    <h4 class="font-bold text-lg text-tenpyo">聖武天皇 (天平)：</h4>
+                    <p class="text-gray-700">しかし太子、天平文化は、より広範囲かつ大規模に唐の文化を取り込み、**国際性の頂点**に達しました。東大寺大仏のように、**スケール**が違います。</p>
                 </div>
 
+                <div class="dialogue asuka">
+                    <h4 class="font-bold text-lg text-asuka">聖徳太子 (飛鳥)：</h4>
+                    <p class="text-gray-700">規模は認めましょう。しかし、法隆寺に見られる**アルカイックスマイル**は、後の時代の**写実的すぎる像**にはない、素朴で神聖な均整美の始まりです。これが天平との**相違点**。</p>
+                </div>
+                
                 <div class="dialogue kokufu">
-                    <h4>紫式部 (国風)：</h4>
-                    <p>お二方の文化は大陸志向が強すぎます。私たちの**国風文化**の**最も大きな相違点**は、**『大陸からの脱却』**です。仏像が**和様化**し、**平等院鳳凰堂**の**定朝様**の仏像は、**寄木造**で**優雅な理想美**を体現しています。建物も**寝殿造**が主流となり、日本の風土に合ったものになりました。</p>
+                    <h4 class="font-bold text-lg text-kokufu">紫式部 (国風)：</h4>
+                    <p class="text-gray-700">両殿の文化はどちらも大陸の模倣が過ぎますわ。私たちの**国風文化**の**最も大きな相違点**は、その**『大陸からの脱却』**。日本の風土に合わせた**優美な和様化**こそが、真の美です。</p>
+                </div>
+                
+                <div class="dialogue tenpyo">
+                    <h4 class="font-bold text-lg text-tenpyo">聖武天皇 (天平)：</h4>
+                    <p class="text-gray-700">日本の風土...。それは、**正倉院の宝物**が示すような、**広大な国際的な視野**を失うことを意味するのでは？</p>
+                </div>
+                
+                <div class="dialogue kokufu">
+                    <h4 class="font-bold text-lg text-kokufu">紫式部 (国風)：</h4>
+                    <p class="text-gray-700">いいえ。**平等院鳳凰堂**の**定朝様**の仏像は、**寄木造**で軽量かつ優雅な理想美を体現しています。外来の技術を**咀嚼し、昇華させた**のです。</p>
                 </div>
             </section>
             
-            <section class="debate-stage stage-2">
-                <h2>ステージ2：社会の変化と表現の転換</h2>
+            <!-- ステージ2 -->
+            <section class="debate-stage stage-2 mb-10 p-5 bg-white rounded-xl shadow-lg border-t-4 border-t-indigo-500">
+                <h2 class="text-xl sm:text-2xl font-bold text-indigo-900 mb-3">ステージ2：社会の変化と表現の転換</h2>
                 <h3 class="theme-title">🛡️ 討論テーマ：「写実性」と「建築の力強さ」</h3>
                 
                 <div class="dialogue kamakura">
-                    <h4>運慶 (鎌倉)：</h4>
-                    <p>紫式部殿の優美さとは**相違点**が明白です。**鎌倉文化**は、**武士の現実主義的な精神**を映します。私の作品、東大寺南大門の**金剛力士像**は、**迫真の写実性**と**力強さ**が特徴。また、建築も**唐様・禅宗様**といった**力強い様式**が導入され、貴族の**寝殿造**とは異なる、**武士の新しい気風**を示しています。</p>
+                    <h4 class="font-bold text-lg text-kamakura">運慶 (鎌倉)：</h4>
+                    <p class="text-gray-700">紫式部殿の優美さとは**相違点**が明白です。**鎌倉文化**は、戦乱の世を生き抜く**武士の現実主義的な精神**を映します。私の作品、東大寺南大門の**金剛力士像**を見れば、その**迫真の写実性**と**力強さ**は一目瞭然でしょう。</p>
                 </div>
                 
                 <div class="dialogue kokufu">
-                    <h4>紫式部 (国風)：</h4>
-                    <p>私たちも**浄土信仰**という点では**共通点**がありますが、**極楽往生を願う**私の時代の建築（**鳳凰堂**）が**優雅な形**なのに対し、運慶殿の仏像は**力強い守護神**。時代が変わり、求めるものが変わったことを示していますね。</p>
-                </div>
-            </section>
-
-            <section class="debate-stage stage-3">
-                <h2>ステージ3：室町文化の「豪華」と「簡素」</h2>
-                <h3 class="theme-title">🍵 討論テーマ：「水墨画・侘び寂びの比較」</h3>
-                
-                <div class="dialogue higashiyama">
-                    <h4>足利義政 (東山)：</h4>
-                    <p>祖父の**北山文化**（**鹿苑寺金閣**）は**豪華絢爛**でしたが、私の**東山文化**は**簡素さ**を追求しています。**銀閣寺**は**侘び・寂び**という**極めて日本的な簡素の美意識**の完成形です。絵画は**水墨画（雪舟）**が主流となり、鮮やかな彩色（天平文化との**相違点**）ではなく、**濃淡のみで精神性**を重んじます。また、**書院造**の要素（**床の間、畳、障子**）は後の日本家屋の**共通点**となりました。</p>
+                    <h4 class="font-bold text-lg text-kokufu">紫式部 (国風)：</h4>
+                    <p class="text-gray-700">おっしゃる通り、貴殿の像は圧倒的です。しかし、私たちも**浄土信仰**という点では**共通点**があります。**極楽往生を願う**私たちの**鳳凰堂**が**優雅な形**なのに対し、貴殿の仏像が**力強い守護神**なのは、時代と支配層の変化ですね。</p>
                 </div>
                 
                 <div class="dialogue kamakura">
-                    <h4>運慶 (鎌倉)：</h4>
-                    <p>我々の時代に生まれた**禅宗**が、あなた様の時代で**水墨画**や**茶の湯**という**精神的な芸術**にまで高められたのですね。**武士精神の簡素さ**が、**禅の哲学**によって洗練されたのを感じます。</p>
+                    <h4 class="font-bold text-lg text-kamakura">運慶 (鎌倉)：</h4>
+                    <p class="text-gray-700">その通り。貴族の**寝殿造**のように優雅では戦は勝てません。建築に導入された**禅宗様**は、**力強い構造**と**実用性**を重視しています。理想美だけでは、この世の苦しみから人々を救えないのです。</p>
+                </div>
+                
+                <div class="dialogue kokufu">
+                    <h4 class="font-bold text-lg text-kokufu">紫式部 (国風)：</h4>
+                    <p class="text-gray-700">しかし、**大和絵**や**物語文学**が持つ、人間の**内面的な感情**への深い洞察もまた、文化の重要な役割ではないでしょうか。</p>
+                </div>
+            </section>
+
+            <!-- ステージ3 -->
+            <section class="debate-stage stage-3 mb-10 p-5 bg-white rounded-xl shadow-lg border-t-4 border-t-indigo-500">
+                <h2 class="text-xl sm:text-2xl font-bold text-indigo-900 mb-3">ステージ3：室町文化の「豪華」と「簡素」</h2>
+                <h3 class="theme-title">🍵 討論テーマ：「水墨画・侘び寂びの比較」</h3>
+                
+                <div class="dialogue higashiyama">
+                    <h4 class="font-bold text-lg text-higashiyama">足利義政 (東山)：</h4>
+                    <p class="text-gray-700">祖父の**北山文化**（**鹿苑寺金閣**）は**豪華絢爛**でしたが、私の**東山文化**は**簡素さ**を追求しました。**銀閣寺**が体現する**侘び・寂び**こそ、**極めて日本的な美意識**の完成形です。</p>
+                </div>
+                
+                <div class="dialogue kamakura">
+                    <h4 class="font-bold text-lg text-kamakura">運慶 (鎌倉)：</h4>
+                    <p class="text-gray-700">我々の時代に広まった**禅宗**の精神が、あなた様の時代でついに洗練されたのですね。武士の求める**質実剛健**の精神が、**禅の哲学**によって芸術へと高められた。</p>
+                </div>
+                
+                <div class="dialogue higashiyama">
+                    <h4 class="font-bold text-lg text-higashiyama">足利義政 (東山)：</h4>
+                    <p class="text-gray-700">その通りです。絵画は鮮やかな彩色（天平文化との**相違点**）ではなく、**水墨画（雪舟）**のように**濃淡のみで精神性**を重んじます。これは、外見よりも内面に価値を置く簡素美の現れです。</p>
+                </div>
+                
+                <div class="dialogue kamakura">
+                    <h4 class="font-bold text-lg text-kamakura">運慶 (鎌倉)：</h4>
+                    <p class="text-gray-700">さらに、**書院造**の**床の間、畳、障子**といった簡素な要素が、後の日本家屋の**共通点**となったのは、東山文化が持つ普遍性の証明でしょう。</p>
                 </div>
             </section>
 
         </main>
 
-        <section class="summary-table-section">
-            <h2>💡 文化の変遷 まとめ：共通点・相違点・見分け方</h2>
-            <table class="summary-table">
-                <thead>
-                    <tr>
-                        <th>文化</th>
-                        <th>最大の特徴</th>
-                        <th>代表的な作品の見分け方 (美術・建築)</th>
-                        <th>他文化との相違点</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>**飛鳥**</td>
-                        <td>大陸文化の始まり</td>
-                        <td>仏像：**アルカイックスマイル**、**素朴な金銅像**（法隆寺釈迦三尊像）</td>
-                        <td>天平の国際性、国風の日本化、鎌倉の写実性がない。</td>
-                    </tr>
-                    <tr>
-                        <td>**天平**</td>
-                        <td>国際色の頂点</td>
-                        <td>仏像：**大規模な塑像・乾漆像**（東大寺大仏、阿修羅像）、**唐風**</td>
-                        <td>国風の「日本化」と優美さ、鎌倉の「武士的写実性」がない。</td>
-                    </tr>
-                    <tr>
-                        <td>**国風**</td>
-                        <td>優美な日本化</td>
-                        <td>仏像：**寄木造**の**優美な定朝様**（鳳凰堂阿弥陀如来）。建築：**寝殿造**。絵画：**大和絵**。</td>
-                        <td>武士の精神性、侘び・寂びの簡素美がない。</td>
-                    </tr>
-                    <tr>
-                        <td>**鎌倉**</td>
-                        <td>武士の写実性</td>
-                        <td>仏像：**迫真の写実性**、**力強い表情**（金剛力士像）。建築：**禅宗様**（貫・組物の力強さ）。</td>
-                        <td>東山の「洗練された簡素美」、北山の「豪華さ」がない。</td>
-                    </tr>
-                    <tr>
-                        <td>**東山**</td>
-                        <td>侘び・寂びの完成</td>
-                        <td>絵画：**水墨画**（雪舟）。建築：**書院造**（床の間、畳）。庭園：**枯山水**。</td>
-                        <td>北山の「豪華絢爛」さ、鎌倉の「豪快な写実性」がない。</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- まとめテーブルセクション -->
+        <section class="summary-table-section bg-white p-6 rounded-xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-800 border-b-2 border-indigo-400 pb-2">💡 文化の変遷 まとめ：共通点・相違点・見分け方</h2>
+            <div class="overflow-x-auto">
+                <table class="summary-table w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-indigo-100 text-indigo-700">
+                            <th class="py-3 px-4 font-semibold border-b">文化</th>
+                            <th class="py-3 px-4 font-semibold border-b">最大の特徴</th>
+                            <th class="py-3 px-4 font-semibold border-b">代表的な作品の見分け方 (美術・建築)</th>
+                            <th class="py-3 px-4 font-semibold border-b">他文化との相違点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-3 px-4 border-b">**飛鳥**</td>
+                            <td class="py-3 px-4 border-b">大陸文化の始まり</td>
+                            <td class="py-3 px-4 border-b">仏像：**アルカイックスマイル**、**素朴な金銅像**（法隆寺釈迦三尊像）</td>
+                            <td class="py-3 px-4 border-b text-sm text-gray-600">天平の国際性、国風の日本化、鎌倉の写実性がない。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b">**天平**</td>
+                            <td class="py-3 px-4 border-b">国際色の頂点</td>
+                            <td class="py-3 px-4 border-b">仏像：**大規模な塑像・乾漆像**（東大寺大仏、阿修羅像）、**唐風**</td>
+                            <td class="py-3 px-4 border-b text-sm text-gray-600">国風の「日本化」と優美さ、鎌倉の「武士的写実性」がない。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b">**国風**</td>
+                            <td class="py-3 px-4 border-b">優美な日本化</td>
+                            <td class="py-3 px-4 border-b">仏像：**寄木造**の**優美な定朝様**（鳳凰堂阿弥陀如来）。建築：**寝殿造**。絵画：**大和絵**。</td>
+                            <td class="py-3 px-4 border-b text-sm text-gray-600">武士の精神性、侘び・寂びの簡素美がない。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b">**鎌倉**</td>
+                            <td class="py-3 px-4 border-b">武士の写実性</td>
+                            <td class="py-3 px-4 border-b">仏像：**迫真の写実性**、**力強い表情**（金剛力士像）。建築：**禅宗様**（貫・組物の力強さ）。</td>
+                            <td class="py-3 px-4 border-b text-sm text-gray-600">東山の「洗練された簡素美」、北山の「豪華さ」がない。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b">**東山**</td>
+                            <td class="py-3 px-4 border-b">侘び・寂びの完成</td>
+                            <td class="py-3 px-4 border-b">絵画：**水墨画**（雪舟）。建築：**書院造**（床の間、畳）。庭園：**枯山水**。</td>
+                            <td class="py-3 px-4 border-b text-sm text-gray-600">北山の「豪華絢爛」さ、鎌倉の「豪快な写実性」がない。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
         
-        <footer class="main-footer">
+        <footer class="main-footer text-center py-6 text-gray-500 text-sm border-t mt-8">
             <p>&copy; 文化変遷ディベート制作委員会</p>
         </footer>
     </div>
